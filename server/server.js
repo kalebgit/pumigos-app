@@ -1,4 +1,19 @@
 const mongoose = require("mongoose");
+const express = require("express")
+
+//own imports
+const userRoute = require("./routes/users.router")
+
+const app = express();
+
+app.use(express.json());
+
+app.use((req, res, next)=>{
+    next();
+})
+
+app.use('/api/users', userRoute);
+
 
 
 
@@ -10,3 +25,8 @@ mongoose.connect("mongodb+srv://emilianokaleb:Mongokaleb2005@proyectocoder.bmy8c
     .catch((err)=>{
         console.log(err)
     })
+
+const PORT = 8080;
+app.listen(PORT, ()=>[
+    console.log("server connected")
+])

@@ -1,9 +1,13 @@
 const mongoose = require("mongoose");
 
 const sellerSchema = new mongoose.Schema({
+    userID: {
+        type: mongoose.Types.ObjectId,
+        required: true
+    },
     phoneNumber: {
         type: Number,
-        
+        required: false,
     },
     products: [
         {
@@ -56,6 +60,6 @@ sellerSchema.pre('save', function(next){
     next()
 });
 
-const sellerModel = mongoose.model('sellers', sellerSchema);
+const Seller = mongoose.model('sellers', sellerSchema);
 
-export default sellerModel
+export default Seller
