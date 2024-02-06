@@ -10,6 +10,7 @@ import Posts from './pages/Posts.jsx'
 import Chat from './pages/Chat.jsx'
 import Register from './pages/Register.jsx'
 import General from './pages/General/General.jsx'
+import Market from './pages/Market.jsx'
 
 
 const router = createBrowserRouter([
@@ -27,6 +28,9 @@ const router = createBrowserRouter([
       },{
         path: '/chat',
         element: <Chat/>
+      },{
+        path: '/market',
+        element: <Market/>
       }
     ]
   }

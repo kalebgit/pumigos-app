@@ -1,7 +1,7 @@
 {
-  "name": "pumigos-app",
+  "name": "server",
   "version": "1.0.0",
-  "description": "app for my school",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "mongoose": "^8.1.1"
   }
 }

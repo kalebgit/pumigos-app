@@ -5,10 +5,13 @@ export default function General(){
     const routes = [
         {
             path: '/posts',
-            title: "Publicaciones"
+            name: "Publicaciones"
         },{
             path: '/chat',
-            title: "Chat"
+            name: "Chat"
+        },{
+            path: '/market',
+            name: "Market"
         }
     ]
 

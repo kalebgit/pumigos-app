@@ -10,7 +10,7 @@ function isUpperCase(string) {
 
 
 export default function Register(){
-    const [isSignUp, setIsLSignUp] = useState(false)
+    const [isSignUp, setIsSignUp] = useState(false)
     //email useInput
     const {
         inputValue: email, 
@@ -43,10 +43,31 @@ export default function Register(){
             return message;
         });
 
+    const {
+        inputValue: confirmationPassword, 
+        setInputValue: setConfirmationPassword, 
+        errorMessage: confirmationPasswordErrorMessage, 
+        setErrorMessage: setConfirmationPasswordErrorMessage,
+        validateError: validateConfirmationPassword} = useInput("", (confirmationPassword)=>{
+            let message = "";
+            if(password != confirmationPassword){
+                message = message + "la contraseña no es la misma"
+            }
+            return message;
+        });
+
+
+    
+    function onChangeForm(event){
+        event.preventDefault()
+        setIsSignUp((prevState)=>{
+            return !prevState
+        })
+    }
     
 
     return (
-        <Form title="" onSubmit="" action="" method="">
+        <Form title={`${isSignUp ? "Crear Cuenta" : "Iniciar Sesion"}`} onSubmit="" action="" method="">
             <InputBox 
                 name="name"  
                 id="name" 
@@ -75,8 +96,8 @@ export default function Register(){
                 name="password" 
                 id="password" 
                 type="password" 
-                placeholder="contraseña: (minimo 8 caracteres y debe empezar con mayus)" 
-                labelText="Contraseña"
+                placeholder="ingresa contraseña" 
+                labelText="Contraseña (minimo 8 caracteres y debe empezar con mayus)"
                 onChange={({target:{value}})=>{
                     setPasswordErrorMessage("")
                     setPassword(value);
@@ -88,7 +109,36 @@ export default function Register(){
                     setPasswordErrorMessage(validatePassword)
                 }}
                 required/>
-            {/* {isSignUp &&} */}
+
+            
+            {isSignUp ? 
+                <>
+                    <InputBox 
+                    name="confirm-password" 
+                    id="confirm-password" 
+                    type="password" 
+                    placeholder="confirma contraseña " 
+                    labelText="Confirmacion Contraseña"
+                    onChange={({target:{value}})=>{
+                        setConfirmationPasswordErrorMessage("")
+                        setConfirmationPassword(value);
+                        
+                    }}
+                    value={confirmationPassword}
+                    errorMessage={confirmationPasswordErrorMessage}
+                    onBlur={()=>{
+                        setConfirmationPasswordErrorMessage(validateConfirmationPassword)
+                    }}
+                    required/>
+                    <p>Ya tienes una cuenta? 
+                        <button onClick={onChangeForm}className="hover:underline text-blue-400 hover:cursor-pointer">
+                            Inicia Sesion
+                        </button>
+                    </p>
+                </>
+                
+            : <p>No tienes una cuenta? <button onClick={onChangeForm}className="hover:underline text-blue-400 hover:cursor-pointer">Registrate</button></p>}
+            
         </Form>
     )
 }

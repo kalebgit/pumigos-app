@@ -2,10 +2,10 @@ import {forwardRef} from 'react'
 
 const InputBox = forwardRef(function({labelText, errorMessage, ...props}, ref){
     return (
-        <div className="">
-            <label className="" htmlFor={props.name}>{labelText}</label>
+        <div className="flex flex-col flex-nowrap justify-start items-start ">
+            <label className="" htmlFor={props.name}>{labelText}: </label>
             <input {...props}/>
-            {errorMessage && errorMessage.length > 0 && <div>{errorMessage}</div>}
+            <p className="text-red-500">{errorMessage}</p>
         </div>
     )
 }) 
