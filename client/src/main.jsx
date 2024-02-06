@@ -5,9 +5,11 @@ import './index.scss'
 
 //own imports
 import {Router, RouterProvider, createBrowserRouter} from "react-router-dom"
-import General from './pages/General/General.jsx'
-import Posts from './pages/posts.jsx'
+
+import Posts from './pages/Posts.jsx'
 import Chat from './pages/Chat.jsx'
+import Register from './pages/Register.jsx'
+import General from './pages/General/General.jsx'
 
 
 const router = createBrowserRouter([
@@ -15,6 +17,10 @@ const router = createBrowserRouter([
     path: '/',
     element: <General/>,
     children: [
+      {
+        index: true,
+        element: <Register/>
+      },
       {
         path: '/posts',
         element: <Posts/>

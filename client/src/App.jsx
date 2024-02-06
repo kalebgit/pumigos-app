@@ -1,13 +1,11 @@
+
 import './App.scss'
 
-function App() {
-  
+function App(){
 
-  return (
-    <>
-      
-    </>
-  )
+    return (
+        <>
+        </>
+    )
 }
-
 export default App

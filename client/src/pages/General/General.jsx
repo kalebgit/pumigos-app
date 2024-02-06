@@ -16,7 +16,6 @@ export default function General(){
         <>
             <NavigationBar links={routes}/>
             <Outlet/>
-            
         </>
     )
 }

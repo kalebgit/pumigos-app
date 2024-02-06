@@ -2,7 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import Form from "../components/Forms/Form";
 import InputBox from "../components/Forms/InputBox";
 import useInput from "../hooks/useInput";
-import {isUpperCase} from '../util/functions'
+
+
+function isUpperCase(string) {
+    return string.toUpperCase() === string;
+  }
 
 
 export default function Register(){
@@ -13,14 +17,13 @@ export default function Register(){
         setInputValue: setEmail, 
         errorMessage: emailErrorMessage, 
         setErrorMessage: setEmailErrorMessage,
-        setDidEdit: setEmailEdited,
-        validate: validateEmail} = useInput("", (email)=>{
-            let errorMessage = ""
+        validateError: validateEmail} = useInput("", (email)=>{
+            let message = ""
             if(!email.includes("@")){
-                errorMessage = errorMessage + "| el correo debe tener '@' |"
+                message = message + "| el correo debe tener '@' |"
             }
 
-            return errorMessage;
+            return message;
         });
 
     //name useInput
@@ -29,16 +32,15 @@ export default function Register(){
         setInputValue: setPassword, 
         errorMessage: passwordErrorMessage, 
         setErrorMessage: setPasswordErrorMessage,
-        setDidEdit: setPasswordEdited,
-        validate: validatePassword} = useInput("", (password)=>{
-            let errorMessage = "";
+        validateError: validatePassword} = useInput("", (password)=>{
+            let message = "";
             if(!(password.length > 8)){
-                errorMessage = errorMessage + " | la contraseña debe tener 8 o mas caracteres | ";
+                message = message + " | la contraseña debe tener 8 o mas caracteres | ";
             }
             if(!isUpperCase(password[0])){
-                errorMessage = errorMessage + " | el primer caracter debe ser mayus | "   
+                message = message + " | el primer caracter debe ser mayus | "   
             }
-            return errorMessage;
+            return message;
         });
 
     
@@ -60,10 +62,11 @@ export default function Register(){
                 placeholder="Ingrese su email" 
                 labelText="Email" 
                 onChange={({target: {value}})=>{
+                    setEmailErrorMessage("")
                     setEmail(value)
                 }}
                 value={email}
-                errorMessage={errorMessage}
+                errorMessage={emailErrorMessage}
                 onBlur={()=>{
                     setEmailErrorMessage(validateEmail)
                 }}
@@ -75,10 +78,12 @@ export default function Register(){
                 placeholder="contraseña: (minimo 8 caracteres y debe empezar con mayus)" 
                 labelText="Contraseña"
                 onChange={({target:{value}})=>{
+                    setPasswordErrorMessage("")
                     setPassword(value);
                     
                 }}
                 value={password}
+                errorMessage={passwordErrorMessage}
                 onBlur={()=>{
                     setPasswordErrorMessage(validatePassword)
                 }}

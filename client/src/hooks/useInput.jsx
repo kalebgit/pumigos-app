@@ -1,16 +1,20 @@
-
+import { useState, useEffect } from "react";
 
 export default function useInput(initialValue, hasError){
     const [inputValue, setInputValue] = useState(initialValue);
     const [errorMessage, setErrorMessage] = useState("");
 
     const validateError = (prevState)=>{
-        return hasError(inputValue)
+        if(inputValue){
+            return hasError(inputValue)
+        }
+        return prevState
     }
 
     useEffect(()=>{
+        let timer 
         if(inputValue){
-            const timer = setTimeout(()=>{
+            timer = setTimeout(()=>{
                 setErrorMessage(validateError)
             }, 2000);
         }
@@ -27,7 +31,7 @@ export default function useInput(initialValue, hasError){
         setInputValue,
         errorMessage,
         setErrorMessage,
-        setDidEdit,
-        reset
+        reset,
+        validateError
     }
 }
