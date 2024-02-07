@@ -19,13 +19,16 @@ userRouter.get('/:id', async(req, res, next)=>{
 });
 
 userRouter.post('/', async(req, res, next)=>{
-    try{
-        const user = await User.create(req.body);
-        res.sendStatus(201)
-    }catch(err){
-        console.log(err)
-        res.sendStatus(500)
-    }
+    // try{
+    //     const user = await User.create(req.body);
+    //     res.sendStatus(201)
+    // }catch(err){
+    //     console.log(err)
+    //     res.sendStatus(500)
+    // }
+    console.log("post method: ")
+    console.log(req.body)
+    res.sendStatus(200).send("JFAJFAJ")
 })
 
 userRouter.put('/', async(req, res, next)=>{
@@ -39,4 +42,4 @@ userRouter.delete('/', async(req, res, next)=>{
 
 
 
-export default userRouter;
+module.exports =  userRouter;

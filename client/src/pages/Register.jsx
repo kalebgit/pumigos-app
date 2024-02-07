@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+
 import Form from "../components/Forms/Form";
 import InputBox from "../components/Forms/InputBox";
 import useInput from "../hooks/useInput";
@@ -10,50 +11,58 @@ function isUpperCase(string) {
 
 
 export default function Register(){
+    const apiPath = new URL("http://127.0.0.1:8080/api/users")
+    
     const [isSignUp, setIsSignUp] = useState(false)
+
     //email useInput
     const {
         inputValue: email, 
         setInputValue: setEmail, 
-        errorMessage: emailErrorMessage, 
-        setErrorMessage: setEmailErrorMessage,
+        error: {valid: validEmail, message:emailErrorMessage}, 
+        setError: setEmailErrorMessage,
         validateError: validateEmail} = useInput("", (email)=>{
-            let message = ""
+            let error = {valid: true, message: ""}
             if(!email.includes("@")){
-                message = message + "| el correo debe tener '@' |"
+                error.valid = false
+                error.message = error.message + "| el correo debe tener '@' |"
             }
 
-            return message;
+            return error;
         });
 
     //name useInput
     const {
         inputValue: password, 
         setInputValue: setPassword, 
-        errorMessage: passwordErrorMessage, 
-        setErrorMessage: setPasswordErrorMessage,
+        error: {valid: validPassword, message: passwordErrorMessage}, 
+        setError: setPasswordErrorMessage,
         validateError: validatePassword} = useInput("", (password)=>{
-            let message = "";
+            let error = {valid: true, message: ""};
             if(!(password.length > 8)){
-                message = message + " | la contraseña debe tener 8 o mas caracteres | ";
+                error.valid = false
+                error.message = error.message + " | la contraseña debe tener 8 o mas caracteres | ";
             }
             if(!isUpperCase(password[0])){
-                message = message + " | el primer caracter debe ser mayus | "   
+                error.valid = false
+                error.message = error.message + " | el primer caracter debe ser mayus | "   
             }
-            return message;
+            return error;
         });
 
+    //confirmationPassword useInput
     const {
         inputValue: confirmationPassword, 
         setInputValue: setConfirmationPassword, 
-        errorMessage: confirmationPasswordErrorMessage, 
-        setErrorMessage: setConfirmationPasswordErrorMessage,
+        error: {valid: validConfirmationPassword, message: confirmationPasswordErrorMessage}, 
+        setError: setConfirmationPasswordErrorMessage,
         validateError: validateConfirmationPassword} = useInput("", (confirmationPassword)=>{
-            let message = "";
+            let error = {valid: true, message: ""};
             if(password != confirmationPassword){
-                message = message + "la contraseña no es la misma"
+                error.valid = false
+                error.message = error.message + "la contraseña no es la misma"
             }
-            return message;
+            return error;
         });
 
 
@@ -64,18 +73,57 @@ export default function Register(){
             return !prevState
         })
     }
+
+    async function onSubmit(event){
+        event.preventDefault()
+        
+        try{
+            if(isSignUp){
+                const formData = new FormData(event.target);
+                const {email, name, password}= Object.fromEntries(formData.entries());
+                const newUser = {email, name, password}
+                console.log(newUser)
+                const usersRequest = new Request(apiPath, {
+                    headers: {'Access-Control-Allow-Origin': '*'},
+                    method: 'POST',
+                    cache: 'no-cache',
+                    body: JSON.stringify(newUser)
+                })
+                //how can I avoid CORS exception?
+                const res = await fetch(usersRequest, {credentials: "omit"})
+                if(!res.ok){
+                    console.log('there was a problem')
+                }
+                console.log(res)
+            }else{
+                //id has to be within the cookies or something like that
+                const signInPath = new URL(apiPath.toString + `${id}`)
+                
+                const loginRequest = new Request(signInPath, {
+                    headers: {'x-steve': 'hello'},
+                    method: 'GET',
+                    cache: 'no-store'
+                })
+                
+                
+            }
+        }catch(err){
+            console.log(err)
+        }
+        
+    }
     
 
     return (
-        <Form title={`${isSignUp ? "Crear Cuenta" : "Iniciar Sesion"}`} onSubmit="" action="" method="">
-            <InputBox 
+        <Form title={`${isSignUp ? "Crear Cuenta" : "Iniciar Sesion"}`} onSubmit={onSubmit} action="" method="">
+            {isSignUp && <InputBox 
                 name="name"  
                 id="name" 
                 type="text" 
                 placeholder="Ingrese su nombre" 
                 labelText="Nombre" 
                 required
-                />
+                />}
             <InputBox 
                 name="email" 
                 id="email" 
@@ -139,6 +187,10 @@ export default function Register(){
                 
             : <p>No tienes una cuenta? <button onClick={onChangeForm}className="hover:underline text-blue-400 hover:cursor-pointer">Registrate</button></p>}
             
+            <button className="py-1 px-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xl disabled:bg-slate-400 disabled:text-gray-300"
+                disabled={
+                    isSignUp ? !(validEmail && validPassword && validConfirmationPassword) : !(validEmail && validPassword)
+                }>{isSignUp ? "Crear Cuenta" : "Iniciar Sesion"}</button>
         </Form>
     )
 }

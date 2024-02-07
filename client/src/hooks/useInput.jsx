@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 export default function useInput(initialValue, hasError){
     const [inputValue, setInputValue] = useState(initialValue);
-    const [errorMessage, setErrorMessage] = useState("");
+    const [error, setError] = useState({valid: false, message: ""});
 
     const validateError = (prevState)=>{
         if(inputValue){
@@ -15,7 +15,7 @@ export default function useInput(initialValue, hasError){
         let timer 
         if(inputValue){
             timer = setTimeout(()=>{
-                setErrorMessage(validateError)
+                setError(validateError)
             }, 2000);
         }
 
@@ -29,8 +29,8 @@ export default function useInput(initialValue, hasError){
     return {
         inputValue,
         setInputValue,
-        errorMessage,
-        setErrorMessage,
+        error,
+        setError,
         reset,
         validateError
     }

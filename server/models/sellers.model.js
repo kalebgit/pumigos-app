@@ -62,4 +62,4 @@ sellerSchema.pre('save', function(next){
 
 const Seller = mongoose.model('sellers', sellerSchema);
 
-export default Seller
+module.exports = Seller
