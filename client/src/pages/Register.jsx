@@ -43,6 +43,91 @@ export default function Register(){
             return message;
         });
 
+<<<<<<< Updated upstream
+=======
+    //confirmationPassword useInput
+    const {
+        inputValue: confirmationPassword, 
+        setInputValue: setConfirmationPassword, 
+        error: {valid: validConfirmationPassword, message: confirmationPasswordErrorMessage}, 
+        setError: setConfirmationPasswordErrorMessage,
+        validateError: validateConfirmationPassword} = useInput("", (confirmationPassword)=>{
+            let error = {valid: true, message: ""};
+            if(password != confirmationPassword){
+                error.valid = false
+                error.message = error.message + "la contraseña no es la misma"
+            }
+            return error;
+        });
+
+
+    
+    function onChangeForm(event){
+        event.preventDefault()
+        setIsSignUp((prevState)=>{
+            return !prevState
+        })
+    }
+
+    async function onSubmit(event){
+        event.preventDefault()
+        
+        try{
+            if(isSignUp){
+                const formData = new FormData(event.target);
+                const {email, name, password}= Object.fromEntries(formData.entries());
+                const newUser = {email, name, password}
+                console.log(newUser)
+                // const usersRequest = new Request(apiPath, {
+                //     headers: {'Access-Control-Allow-Origin': '*'},
+                //     method: 'POST',
+                //     cache: 'no-cache',
+                //     body: JSON.stringify(newUser)
+                // })
+                // const url = new URL('http://127.0.0.1:8080/api/users')
+                // const postRequest = new Request(url, {
+                //     method: 'POST',
+                //     body: 'hola'
+                // })
+                //how can I avoid CORS exception?
+                // const res = await fetch(postRequest)
+                //second version
+                // const jsonStringUser = JSON.stringify(newUser);
+                // const res = await fetch(url, {
+                //     headers: {'content-type': 'application/json'},
+                //     method: 'POST',
+                //     body: jsonStringUser
+                // })
+                //third version and simplified
+                const postRequest = new Request(apiPath, {
+                    headers: {'content-type': 'application/json'},
+                    method: 'POST',
+                    body: JSON.stringify(newUser)
+                })
+                console.log(postRequest.headers.get("content-type"))
+                const res = await fetch(postRequest)
+                if(!res.ok){
+                    console.log('there was a problem')
+                }
+                console.log(res)
+            }else{
+                //id has to be within the cookies or something like that
+                const signInPath = new URL(apiPath.toString + `${id}`)
+                
+                const loginRequest = new Request(signInPath, {
+                    headers: {'x-steve': 'hello'},
+                    method: 'GET',
+                    cache: 'no-store'
+                })
+                
+                
+            }
+        }catch(err){
+            console.log(err)
+        }
+        
+    }
+>>>>>>> Stashed changes
     
 
     return (
