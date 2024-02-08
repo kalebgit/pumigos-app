@@ -94,6 +94,7 @@ export default function Register(){
                     console.log('there was a problem')
                 }
                 console.log(res)
+                
             }else{
                 //id has to be within the cookies or something like that
                 const loginPath = new URL(apiPath.toString + `${id}`)
@@ -113,26 +114,30 @@ export default function Register(){
         
     }
     
-    function usingApiKeys(){
-        let sampleUrl = new URL('http://127.0.0.1:8080/?name=value&kaleb=human')
-        sampleUrl.searchParams.append('api-key', '')
+    let sampleUrl = new URL('http://127.0.0.1:8080/?name=value&kaleb=human')
+    // sampleUrl.searchParams.append('api-key', '')
 
-        let h = new Headers();
-        h.append('content-type', 'application/json')
-        
-        const request = new Request(sampleUrl, {
-            methdo: 'GET',
-            headers: h
+    let h = new Headers();
+    // h.append('content-type', 'application/json')
+    
+    const dummyRequest = new Request(sampleUrl, {
+        method: 'GET',
+        // headers: h
+    })
+    let returnedData = ''
+    fetch(dummyRequest).then((res)=>{
+        if(res.ok){
+            return res.text()
+        }
+    })
+        .then((data)=>{
+            returnedData = data
+        })
+        .catch((err)=>{
+            console.log(err)
         })
 
-        //using headres
-        let customHeaders = new Headers()
-        customHeaders.append('content-type', 'application/json')
-        let requestWithHeaders = new Request(sampleUrl, {
-            method: 'GET',
-            headers: customHeaders
-        })
-    }
+    console.log(returnedData)
 
     return (
         <Form title={`${isSignUp ? "Crear Cuenta" : "Iniciar Sesion"}`} onSubmit={onSubmit} action="" method="">
