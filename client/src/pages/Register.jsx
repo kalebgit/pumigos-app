@@ -83,34 +83,12 @@ export default function Register(){
                 const formData = new FormData(event.target);
                 const {email, name, password}= Object.fromEntries(formData.entries());
                 const newUser = {email, name, password}
-                console.log(newUser)
-                // const usersRequest = new Request(apiPath, {
-                //     headers: {'Access-Control-Allow-Origin': '*'},
-                //     method: 'POST',
-                //     cache: 'no-cache',
-                //     body: JSON.stringify(newUser)
-                // })
-                // const url = new URL('http://127.0.0.1:8080/api/users')
-                // const postRequest = new Request(url, {
-                //     method: 'POST',
-                //     body: 'hola'
-                // })
-                //how can I avoid CORS exception?
-                // const res = await fetch(postRequest)
-                //second version
-                // const jsonStringUser = JSON.stringify(newUser);
-                // const res = await fetch(url, {
-                //     headers: {'content-type': 'application/json'},
-                //     method: 'POST',
-                //     body: jsonStringUser
-                // })
-                //third version and simplified
                 const postRequest = new Request(apiPath, {
                     headers: {'content-type': 'application/json'},
                     method: 'POST',
                     body: JSON.stringify(newUser)
                 })
-                console.log(postRequest.headers.get("content-type"))
+                // console.log(postRequest.headers.get("content-type"))
                 const res = await fetch(postRequest)
                 if(!res.ok){
                     console.log('there was a problem')
@@ -118,13 +96,14 @@ export default function Register(){
                 console.log(res)
             }else{
                 //id has to be within the cookies or something like that
-                const signInPath = new URL(apiPath.toString + `${id}`)
+                const loginPath = new URL(apiPath.toString + `${id}`)
                 
-                const loginRequest = new Request(signInPath, {
-                    headers: {'x-steve': 'hello'},
+                const loginRequest = new Request(loginPath, {
                     method: 'GET',
                     cache: 'no-store'
                 })
+
+                
                 
                 
             }
@@ -134,6 +113,26 @@ export default function Register(){
         
     }
     
+    function usingApiKeys(){
+        let sampleUrl = new URL('http://127.0.0.1:8080/?name=value&kaleb=human')
+        sampleUrl.searchParams.append('api-key', '')
+
+        let h = new Headers();
+        h.append('content-type', 'application/json')
+        
+        const request = new Request(sampleUrl, {
+            methdo: 'GET',
+            headers: h
+        })
+
+        //using headres
+        let customHeaders = new Headers()
+        customHeaders.append('content-type', 'application/json')
+        let requestWithHeaders = new Request(sampleUrl, {
+            method: 'GET',
+            headers: customHeaders
+        })
+    }
 
     return (
         <Form title={`${isSignUp ? "Crear Cuenta" : "Iniciar Sesion"}`} onSubmit={onSubmit} action="" method="">

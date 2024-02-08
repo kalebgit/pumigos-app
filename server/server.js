@@ -19,6 +19,24 @@ app.use((req, res, next)=>{
 app.use('/api/users', userRoute);
 
 
+//code to test
+app.get('/', (req, res, next)=>{
+    console.log(req.query);
+    res.send("Hello World")
+
+})
+
+app.post('/', (req, res, next)=>{
+    res.status(201).send("thanks for adding something")
+})
+
+app.put("/:id", (req, res)=>{
+    res.status(200).send("thnaks for updating something")
+})
+
+app.delete("/:id", (req, res)=>{
+    res.status(200).send("thanks for deleting something")
+})
 
 
 
