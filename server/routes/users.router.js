@@ -8,12 +8,12 @@ userRouter.get('/:id', async(req, res, next)=>{
     try{
         if(id){
             const user = await User.findById(id);
-            if(user) res.sendStatus(200).send(user)
-            else res.sendStatus(404)
+            if(user) res.status(200).send(user)
+            else res.status(404).send()
         }else res.send(await User.find())
     }catch(err){
         console.log(err)
-        res.sendStatus(500)
+        res.status(500).send()
     }
     
 });
@@ -21,14 +21,14 @@ userRouter.get('/:id', async(req, res, next)=>{
 userRouter.post('/', async(req, res, next)=>{
     // try{
     //     const user = await User.create(req.body);
-    //     res.sendStatus(201)
+    //     res.status(201)
     // }catch(err){
     //     console.log(err)
-    //     res.sendStatus(500)
+    //     res.status(500)
     // }
     console.log("post method: ")
     console.log(req.body)
-    res.sendStatus(200).send("JFAJFAJ")
+    res.status(200).send("JFAJFAJ")
 })
 
 userRouter.put('/', async(req, res, next)=>{

@@ -50,6 +50,7 @@ export default function Register(){
             return error;
         });
 
+
     //confirmationPassword useInput
     const {
         inputValue: confirmationPassword, 
@@ -83,14 +84,34 @@ export default function Register(){
                 const {email, name, password}= Object.fromEntries(formData.entries());
                 const newUser = {email, name, password}
                 console.log(newUser)
-                const usersRequest = new Request(apiPath, {
-                    headers: {'Access-Control-Allow-Origin': '*'},
+                // const usersRequest = new Request(apiPath, {
+                //     headers: {'Access-Control-Allow-Origin': '*'},
+                //     method: 'POST',
+                //     cache: 'no-cache',
+                //     body: JSON.stringify(newUser)
+                // })
+                // const url = new URL('http://127.0.0.1:8080/api/users')
+                // const postRequest = new Request(url, {
+                //     method: 'POST',
+                //     body: 'hola'
+                // })
+                //how can I avoid CORS exception?
+                // const res = await fetch(postRequest)
+                //second version
+                // const jsonStringUser = JSON.stringify(newUser);
+                // const res = await fetch(url, {
+                //     headers: {'content-type': 'application/json'},
+                //     method: 'POST',
+                //     body: jsonStringUser
+                // })
+                //third version and simplified
+                const postRequest = new Request(apiPath, {
+                    headers: {'content-type': 'application/json'},
                     method: 'POST',
-                    cache: 'no-cache',
                     body: JSON.stringify(newUser)
                 })
-                //how can I avoid CORS exception?
-                const res = await fetch(usersRequest, {credentials: "omit"})
+                console.log(postRequest.headers.get("content-type"))
+                const res = await fetch(postRequest)
                 if(!res.ok){
                     console.log('there was a problem')
                 }
