@@ -12,6 +12,35 @@ function isUpperCase(string) {
 
 export default function Register(){
     const apiPath = new URL("http://127.0.0.1:8080/api/users")
+
+    useEffect( ()=>{
+        let sampleUrl = new URL('http://127.0.0.1:8080/?name=value&kaleb=human')
+        // sampleUrl.searchParams.append('api-key', '')
+
+        let h = new Headers();
+        // h.append('content-type', 'application/json')
+        
+        const dummyRequest = new Request(sampleUrl, {
+            method: 'GET',
+            // headers: h
+            cache: 'default',
+            credentials: 'omit'
+        })
+
+        const getData = async()=>{
+            const res = await fetch(dummyRequest)
+            const data = await res.text()
+            console.log(data)
+        }
+        
+
+        getData()
+
+        
+        return ()=>{
+
+        }
+    })
     
     const [isSignUp, setIsSignUp] = useState(false)
 
@@ -114,30 +143,7 @@ export default function Register(){
         
     }
     
-    let sampleUrl = new URL('http://127.0.0.1:8080/?name=value&kaleb=human')
-    // sampleUrl.searchParams.append('api-key', '')
-
-    let h = new Headers();
-    // h.append('content-type', 'application/json')
     
-    const dummyRequest = new Request(sampleUrl, {
-        method: 'GET',
-        // headers: h
-    })
-    let returnedData = ''
-    fetch(dummyRequest).then((res)=>{
-        if(res.ok){
-            return res.text()
-        }
-    })
-        .then((data)=>{
-            returnedData = data
-        })
-        .catch((err)=>{
-            console.log(err)
-        })
-
-    console.log(returnedData)
 
     return (
         <Form title={`${isSignUp ? "Crear Cuenta" : "Iniciar Sesion"}`} onSubmit={onSubmit} action="" method="">
