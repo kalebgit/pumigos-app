@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.text())
 app.use(express.urlencoded())
 app.use(cors({
-    origin: ""
+    origin: "*"
 }));
 
 app.use((req, res, next)=>{
@@ -23,28 +23,6 @@ app.use((req, res, next)=>{
 app.use('/api/users', userRoute);
 app.use('/api/products', productsRoute);
 app.use('/api/sellers', sellersRoute)
-
-//code to test
-app.get('/', (req, res, next)=>{
-    console.log(req.query);
-    res.send("Hello World")
-
-})
-
-app.post('/', (req, res, next)=>{
-    res.status(201).send("thanks for adding something")
-})
-
-app.put("/:id", (req, res)=>{
-    res.status(200).send("thnaks for updating something")
-})
-
-app.delete("/:id", (req, res)=>{
-    res.status(200).send("thanks for deleting something")
-})
-
-
-
 
 
 const PORT = 8080;

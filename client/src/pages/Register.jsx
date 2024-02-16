@@ -11,31 +11,9 @@ function isUpperCase(string) {
 
 
 export default function Register(){
-    const apiPath = new URL("http://127.0.0.1:8080/api/users")
+    
 
     useEffect( ()=>{
-        let sampleUrl = new URL('http://127.0.0.1:8080/?name=value&kaleb=human')
-        // sampleUrl.searchParams.append('api-key', '')
-
-        let h = new Headers();
-        // h.append('content-type', 'application/json')
-        
-        const dummyRequest = new Request(sampleUrl, {
-            method: 'GET',
-            // headers: h
-            cache: 'default',
-            credentials: 'omit'
-        })
-
-        const getData = async()=>{
-            const res = await fetch(dummyRequest)
-            const data = await res.text()
-            console.log(data)
-        }
-        
-
-        getData()
-
         
         return ()=>{
 
@@ -105,41 +83,41 @@ export default function Register(){
     }
 
     async function onSubmit(event){
-        event.preventDefault()
+        // event.preventDefault()
         
-        try{
-            if(isSignUp){
-                const formData = new FormData(event.target);
-                const {email, name, password}= Object.fromEntries(formData.entries());
-                const newUser = {email, name, password}
-                const postRequest = new Request(apiPath, {
-                    headers: {'content-type': 'application/json'},
-                    method: 'POST',
-                    body: JSON.stringify(newUser)
-                })
-                // console.log(postRequest.headers.get("content-type"))
-                const res = await fetch(postRequest)
-                if(!res.ok){
-                    console.log('there was a problem')
-                }
-                console.log(res)
+        // try{
+        //     if(isSignUp){
+        //         const formData = new FormData(event.target);
+        //         const {email, name, password}= Object.fromEntries(formData.entries());
+        //         const newUser = {email, name, password}
+        //         const postRequest = new Request(apiPath, {
+        //             headers: {'content-type': 'application/json'},
+        //             method: 'POST',
+        //             body: JSON.stringify(newUser)
+        //         })
+        //         // console.log(postRequest.headers.get("content-type"))
+        //         const res = await fetch(postRequest)
+        //         if(!res.ok){
+        //             console.log('there was a problem')
+        //         }
+        //         console.log(res)
                 
-            }else{
-                //id has to be within the cookies or something like that
-                const loginPath = new URL(apiPath.toString + `${id}`)
+        //     }else{
+        //         //id has to be within the cookies or something like that
+        //         const loginPath = new URL(apiPath.toString + `${id}`)
                 
-                const loginRequest = new Request(loginPath, {
-                    method: 'GET',
-                    cache: 'no-store'
-                })
+        //         const loginRequest = new Request(loginPath, {
+        //             method: 'GET',
+        //             cache: 'no-store'
+        //         })
 
                 
                 
                 
-            }
-        }catch(err){
-            console.log(err)
-        }
+        //     }
+        // }catch(err){
+        //     console.log(err)
+        // }
         
     }
     
