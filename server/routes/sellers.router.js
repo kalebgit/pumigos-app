@@ -8,13 +8,13 @@ sellersRouter.get('/:id', async(req, res, next)=>{
     try{
         if(id){
             
-            res.sendStatus(201).send(await Sellers.findById(id));
+            res.status(201).send(await Sellers.findById(id));
         }else{
-            res.sendStatus(200).send(await Sellers.find())
+            res.status(200).send(await Sellers.find())
         }
     }catch(err){
         console.log(err)
-        res.sendStatus(500)
+        res.status(500)
     }
 });
 
@@ -23,9 +23,9 @@ sellersRouter.post('/', async(req, res, next)=>{
         
         await Sellers.create(req.body.seller);
         console.log("seller created")
-        res.sendStatus(201)
+        res.status(201)
     }catch(err){
-        res.sendStatus(500)
+        res.status(500)
     }   
 })
 

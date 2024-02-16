@@ -1,51 +1,22 @@
 const {Router} = require("express")
 const Users = require("../models/users.model")
+const {get, post} = require('../util/httpfunctions')
 
 const userRouter = Router();
 
-userRouter.get('/', async(req, res, next)=>{
-    const {limit} = req.query;
-    try{
-        if(limit){
-            res.sendStatus(await Users.find().limit(limit))
-        }else{
-            res.send(await Users.find())
-        }
-        
-    }catch(err){
-        console.log(err)
-        res.sendStatus(500)
-    }
-})
-
 userRouter.get('/:id', async(req, res, next)=>{
-    const {id} = req.params;
-    try{
-        if(id){
-            const user = await Users.findById(id);
-            if(user){
-                
-                res.sendStatus(200).send(user)
-            }
-            else res.sendStatus(404).send()
-        }else res.sendStatus(404).send()
-    }catch(err){
-        console.log(err)
-        res.sendStatus(500).send()
-    }
     
+    const {code, data} = await get({id: req.params.id, model: Users});
+    res.status(code).send(data);
 });
 
+userRouter.get('/', async(req, res, next)=>{
+    const {code, data} = await get({limit: req.query.limit, model: Users});
+    res.status(code).send(data);
+})
 userRouter.post('/', async(req, res, next)=>{
-    try{
-        await Users.create(req.body);
-        console.log("user created")
-        res.sendStatus(201)
-    }catch(err){
-        console.log(err)
-        res.sendStatus(500)
-    }
-    
+    const {code} = await post({data: req.body, model: Users})
+    res.status(code)
 })
 
 

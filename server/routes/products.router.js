@@ -7,13 +7,13 @@ productsRouter.get('/', async(req, res, next)=>{
     const {limit} = req.query;
     try{
         if(limit){
-            res.sendStatus(200).send(await Products.find().limit(limit))
+            res.status(200).send(await Products.find().limit(limit))
         }else{
-            res.sendStatus(200).send(await Products.find())
+            res.status(200).send(await Products.find())
         }
     }catch(err){
         console.log(err)
-        res.sendStatus(500)
+        res.status(500)
     }
 })
 
@@ -22,13 +22,13 @@ productsRouter.get('/:id', async(req, res, next)=>{
     const {limit} = req.query;
     try{
         if(id){
-            res.sendStatus(201).send(await Products.findById(id));
+            res.status(201).send(await Products.findById(id));
         }else{
-            res.sendStatus(200).send(limit ? await Products.find().limit(limit) : await Products.find())
+            res.status(200).send(limit ? await Products.find().limit(limit) : await Products.find())
         }
     }catch(err){
         console.log(err)
-        res.sendStatus(500)
+        res.status(500)
     }
 })
 
@@ -36,10 +36,10 @@ productsRouter.post('/', async(req, res, next)=>{
     try{
         await Products.create(req.body);
         console.log("product created")
-        res.sendStatus(201)
+        res.status(201)
     }catch(err){
         console.log(err)
-        res.sendStatus(500)
+        res.status(500)
     }
     
 })
