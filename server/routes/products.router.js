@@ -1,47 +1,22 @@
 const Products = require("../models/products.model")
 const {Router} = require("express")
-
+const {get, post} = require('../util/httpfunctions')
 const productsRouter = Router();
 
+//getting all products or a limit of them
 productsRouter.get('/', async(req, res, next)=>{
-    const {limit} = req.query;
-    try{
-        if(limit){
-            res.status(200).send(await Products.find().limit(limit))
-        }else{
-            res.status(200).send(await Products.find())
-        }
-    }catch(err){
-        console.log(err)
-        res.status(500)
-    }
+    const{code, data} = await get({limit: req.query.limit, model: Products});
+    req.status(code).send(data);
 })
-
+//get one product by id
 productsRouter.get('/:id', async(req, res, next)=>{
-    const {id} = req.params;
-    const {limit} = req.query;
-    try{
-        if(id){
-            res.status(201).send(await Products.findById(id));
-        }else{
-            res.status(200).send(limit ? await Products.find().limit(limit) : await Products.find())
-        }
-    }catch(err){
-        console.log(err)
-        res.status(500)
-    }
+    const{code, data} = await get({id: req.params.id, model: Products});
+    req.status(code).send(data);
 })
-
+//creating a new product
 productsRouter.post('/', async(req, res, next)=>{
-    try{
-        await Products.create(req.body);
-        console.log("product created")
-        res.status(201)
-    }catch(err){
-        console.log(err)
-        res.status(500)
-    }
-    
+    const{code} = await post({data: req.body, model: Products});
+    res.status(code)
 })
 
 module.exports = productsRouter
